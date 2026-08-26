@@ -1,46 +1,190 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <title>Accueil</title>
-  <script src="header.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HASA Promotion - Livre Blanc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-cream: #faf9f7;
+    --bg-green: #d8e5d1;
+    --text-dark: #1a1a1a;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text-dark);
+    background-color: var(--bg-cream);
+  }
+
+  .page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-section {
+    background-color: var(--bg-green);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+  }
+
+  .hero-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+
+  .logo-wrapper {
+    flex: 1 1 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 280px;
+  }
+
+  .logo-wrapper img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+  }
+
+  .content-wrapper {
+    flex: 1 1 400px;
+    min-width: 280px;
+  }
+
+  .content-wrapper h1 {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-size: 3rem;
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+
+  .content-wrapper p {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 480px;
+    margin-bottom: 32px;
+  }
+
+  .btn-download {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    background-color: #ffffff;
+    color: var(--text-dark);
+    border: none;
+    padding: 18px 36px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  .btn-download:hover {
+    background-color: #f0f0f0;
+  }
+
+  .nav-section {
+    background-color: var(--bg-cream);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 60px;
+  }
+
+  .nav-arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  .nav-arrow svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  @media (max-width: 768px) {
+    .hero-container {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .content-wrapper h1 {
+      font-size: 2.2rem;
+    }
+
+    .content-wrapper p {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .nav-section {
+      padding: 20px 30px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-section {
+      padding: 40px 20px;
+    }
+
+    .content-wrapper h1 {
+      font-size: 1.8rem;
+    }
+  }
+</style>
 </head>
 <body>
-
-  <!-- Lien À propos -->
-  <nav class="navbar">
-    <div class="navbar__actions">
-      <a href="apropos.html" class="navbar__apropos">À propos</a>
-    </div>
-  </nav>
-
-  <main class="page">
-
-    <section class="hero">
-
-      <!-- Encart document PDF -->
-      <a href="Documents/PDF.pdf" class="card" target="_blank" rel="noopener">
-        <div class="card__illustration">
-          <img src="Images/Illustration WP.png" alt="Illustration du document">
+  <div class="page">
+    <section class="hero-section">
+      <div class="hero-container">
+        <div class="logo-wrapper">
+          <img src="assets/logo.png" alt="HASA Promotion Logo">
         </div>
-        <div class="card__body">
-          <h2 class="card__title">Titre du document</h2>
-          <p class="card__sub">Sous-titre ou description courte du contenu du PDF.</p>
-          <span class="card__link">Ouvrir le PDF →</span>
+        <div class="content-wrapper">
+          <h1>Jouez. Explorez. Investissez.</h1>
+          <p>Découvrez tous nos biens disponibles comme vous n'en avez jamais vu et tentez votre chance pour gagner de nombreux cadeaux.</p>
+          <button class="btn-download">Téléchargez le livre blanc</button>
         </div>
-      </a>
-
-      <!-- Texte introductif -->
-      <p class="hero__latin">
-        MOTIVATIONS DERRIèRE CE SITE
-      </p>
-
-      <!-- Bouton d'action pour commencer -->
-      <a href="start.html" class="btn btn--cta">COMMENCER L'EXPÉRIENCE</a>
-      
-
+      </div>
     </section>
 
-  </main>
-
+    <nav class="nav-section">
+      <button class="nav-arrow" aria-label="Précédent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button class="nav-arrow" aria-label="Suivant">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </nav>
+  </div>
 </body>
 </html>
