@@ -20,6 +20,10 @@
     box-sizing: border-box;
   }
 
+  html, body {
+    height: 100%;
+  }
+
   body {
     font-family: 'Open Sans', sans-serif;
     color: var(--text-dark);
@@ -27,42 +31,56 @@
   }
 
   .page {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
   }
 
+  /* Bande 1 : blanche, vide */
+  .band-white-top {
+    flex: 0 0 17vh;
+    background-color: var(--bg-cream);
+  }
+
+  /* Bande 2 : verte, titre + sous-titre + bouton + logo */
   .hero-section {
+    flex: 0 0 50vh;
     background-color: var(--bg-green);
-    flex: 1;
+    position: relative;
+    z-index: 1;
+    overflow: visible;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 60px 40px;
+    padding: 0 40px;
   }
 
   .hero-container {
     width: 100%;
+    height: 100%;
     max-width: 1200px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 60px;
     flex-wrap: wrap;
+    margin: 0 auto;
   }
 
   .logo-wrapper {
     flex: 1 1 400px;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     min-width: 280px;
+    overflow: visible;
   }
 
   .logo-wrapper img {
-    width: 100%;
-    max-width: 500px;
-    height: auto;
+    height: 106%;
+    width: auto;
+    max-width: none;
   }
 
   .content-wrapper {
@@ -73,8 +91,8 @@
   .content-wrapper h1 {
     font-family: 'League Spartan', sans-serif;
     font-weight: 800;
-    font-size: 3rem;
-    line-height: 1.15;
+    font-size: 4.5rem;
+    line-height: 1.1;
     margin-bottom: 24px;
   }
 
@@ -88,11 +106,13 @@
   }
 
   .btn-download {
+    display: inline-block;
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
     font-size: 1rem;
     background-color: #ffffff;
     color: var(--text-dark);
+    text-decoration: none;
     border: none;
     padding: 18px 36px;
     cursor: pointer;
@@ -103,12 +123,20 @@
     background-color: #f0f0f0;
   }
 
-  .nav-section {
+  /* Bande 3 : blanche, vide */
+  .band-white-mid {
+    flex: 0 0 15vh;
     background-color: var(--bg-cream);
+  }
+
+  /* Bande 4 : verte, flèches de navigation */
+  .nav-section {
+    flex: 0 0 18vh;
+    background-color: var(--bg-green);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 24px 60px;
+    padding: 0 60px;
   }
 
   .nav-arrow {
@@ -128,13 +156,38 @@
   }
 
   @media (max-width: 768px) {
+    .page {
+      height: auto;
+      min-height: 100vh;
+    }
+
+    .band-white-top {
+      flex-basis: 60px;
+    }
+
+    .hero-section {
+      flex-basis: auto;
+      padding: 40px 30px;
+    }
+
     .hero-container {
+      height: auto;
       flex-direction: column;
       text-align: center;
     }
 
+    .logo-wrapper {
+      height: auto;
+    }
+
+    .logo-wrapper img {
+      height: auto;
+      width: 100%;
+      max-width: 400px;
+    }
+
     .content-wrapper h1 {
-      font-size: 2.2rem;
+      font-size: 2.8rem;
     }
 
     .content-wrapper p {
@@ -142,24 +195,28 @@
       margin-right: auto;
     }
 
+    .band-white-mid {
+      flex-basis: 40px;
+    }
+
     .nav-section {
+      flex-basis: 90px;
       padding: 20px 30px;
     }
   }
 
   @media (max-width: 480px) {
-    .hero-section {
-      padding: 40px 20px;
-    }
-
     .content-wrapper h1 {
-      font-size: 1.8rem;
+      font-size: 2.2rem;
     }
   }
 </style>
 </head>
 <body>
   <div class="page">
+
+    <div class="band-white-top"></div>
+
     <section class="hero-section">
       <div class="hero-container">
         <div class="logo-wrapper">
@@ -168,10 +225,12 @@
         <div class="content-wrapper">
           <h1>Jouez. Explorez. Investissez.</h1>
           <p>Découvrez tous nos biens disponibles comme vous n'en avez jamais vu et tentez votre chance pour gagner de nombreux cadeaux.</p>
-          <button class="btn-download">Téléchargez le livre blanc</button>
+          <a class="btn-download" href="telecharger.html">Téléchargez le livre blanc</a>
         </div>
       </div>
     </section>
+
+    <div class="band-white-mid"></div>
 
     <nav class="nav-section">
       <button class="nav-arrow" aria-label="Précédent">
@@ -185,6 +244,7 @@
         </svg>
       </button>
     </nav>
+
   </div>
 </body>
 </html>
