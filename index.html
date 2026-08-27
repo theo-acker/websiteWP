@@ -39,20 +39,76 @@
     overflow: hidden;
   }
 
-  /* Bande 1 : blanche, vide */
+  /* Bande 1 : blanche, en-tête (logo entreprise + navigation) */
   .band-white-top {
-    flex: 0 0 17vh;
+    flex: 0 0 10vh;
     min-height: 0;
     background-color: var(--bg-cream);
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    position: relative;
+  }
+
+  .header-bar {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 40px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .brand-logo img {
+    height: clamp(24px, 5vh, 44px);
+    width: auto;
+    display: block;
+  }
+
+  /* Placeholder tant que le logo entreprise n'est pas fourni */
+  .brand-logo-placeholder {
+    border: 1px dashed #b8b8b0;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-size: clamp(0.65rem, 1.4vh, 0.8rem);
+    color: #8a8a80;
+    white-space: nowrap;
+  }
+
+  .top-nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 2.5vw, 32px);
+  }
+
+  .top-nav a {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: clamp(0.75rem, 1.6vh, 0.95rem);
+    color: var(--text-dark);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .top-nav a:hover {
+    opacity: 0.65;
   }
 
   /* Bande 2 : verte, titre + sous-titre + bouton + logo */
   .hero-section {
-    flex: 0 0 50vh;
+    flex: 0 0 57vh;
     min-height: 0;
     background-color: var(--bg-green);
     position: relative;
-    z-index: 1;
+    z-index: 3;
     overflow: visible;
     display: flex;
     align-items: center;
@@ -75,7 +131,7 @@
   }
 
   .logo-wrapper {
-    flex: 1 1 0;
+    flex: 1.1 1 0;
     height: 100%;
     min-height: 0;
     display: flex;
@@ -87,9 +143,8 @@
 
   .logo-wrapper img {
     width: 100%;
-    height: 100%;
+    height: 122%;
     object-fit: contain;
-    transform: scale(1.06);
   }
 
   .content-wrapper {
@@ -188,7 +243,7 @@
     }
 
     .content-wrapper {
-      flex: 1.6 1 0;
+      flex: 1.5 1 0;
     }
 
     .nav-section {
@@ -212,7 +267,19 @@
 <body>
   <div class="page">
 
-    <div class="band-white-top"></div>
+    <div class="band-white-top">
+      <div class="header-bar">
+        <div class="brand-logo">
+          <!-- Remplacez ce placeholder par : <img src="Images/logo-entreprise.png" alt="Logo entreprise"> -->
+          <div class="brand-logo-placeholder">Votre logo</div>
+        </div>
+        <nav class="top-nav">
+          <a href="#">Accueil</a>
+          <a href="#">Biens</a>
+          <a href="#">Contact</a>
+        </nav>
+      </div>
+    </div>
 
     <section class="hero-section">
       <div class="hero-container">
