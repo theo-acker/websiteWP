@@ -12,6 +12,15 @@
     --bg-cream: #faf9f7;
     --bg-green: #d8e5d1;
     --text-dark: #1a1a1a;
+
+    /* Cartes propriétés */
+    --card-w: clamp(92px, 11vw, 168px);
+    --card-ratio: 1004 / 1299;
+    --card-overlap: 0.14;   /* chevauchement entre cartes voisines */
+    --card-back-offset: 0.05; /* décalage de la carte jumelle (haut-gauche) */
+    --card-cut: 56%;        /* part de la carte cachée sous le pli par défaut */
+    --card-lift: 100%;      /* remontée au survol */
+    --ease-slide: cubic-bezier(.4, 0, .2, 1);
   }
 
   * {
@@ -206,7 +215,7 @@
     background-color: var(--bg-cream);
   }
 
-  /* Bande 4 : verte, flèches de navigation */
+  /* Bande 4 : verte, flèches de navigation + carrousel de propriétés */
   .nav-section {
     flex: 0 0 18vh;
     min-height: 0;
@@ -215,6 +224,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 60px;
+    position: relative;
+    z-index: 4;
   }
 
   .nav-arrow {
@@ -226,11 +237,99 @@
     align-items: center;
     justify-content: center;
     padding: 8px;
+    position: relative;
+    z-index: 5;
+    flex: 0 0 auto;
   }
 
   .nav-arrow svg {
     width: 28px;
     height: 28px;
+  }
+
+  .nav-arrow:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  /* Fenêtre visible du carrousel : ne clippe que l'horizontal,
+     pour laisser les cartes "sortir du décor" verticalement au survol */
+  .cards-viewport {
+    position: relative;
+    flex: 1 1 auto;
+    height: 100%;
+    align-self: stretch;
+    clip-path: inset(-2000px 0px -2000px 0px);
+  }
+
+  .cards-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: flex-start;
+    transition: transform .5s var(--ease-slide);
+    will-change: transform;
+  }
+
+  .cards-track.no-transition {
+    transition: none !important;
+  }
+
+  .card {
+    position: relative;
+    flex: 0 0 auto;
+    width: var(--card-w);
+    aspect-ratio: var(--card-ratio);
+    display: block;
+    text-decoration: none;
+    transform: translateY(var(--card-cut));
+    transition: transform .4s var(--ease-slide), filter .3s ease, opacity .3s ease;
+  }
+
+  .card + .card {
+    margin-left: calc(var(--card-w) * var(--card-overlap) * -1);
+  }
+
+  .card img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+  }
+
+  .card-back {
+    z-index: 0;
+    transform: translate(
+      calc(var(--card-w) * var(--card-back-offset) * -1),
+      calc(var(--card-w) * var(--card-back-offset) * -1)
+    );
+  }
+
+  .card-front {
+    z-index: 1;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.18));
+  }
+
+  .card:hover,
+  .card:focus-visible {
+    transform: translateY(calc(var(--card-cut) - var(--card-lift))) scale(1.06);
+    z-index: 50 !important;
+  }
+
+  .card:hover .card-front,
+  .card:focus-visible .card-front {
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.35));
+  }
+
+  /* Le fond (les autres cartes) se floute quand une carte est survolée */
+  .cards-track:has(.card:hover) .card:not(:hover) {
+    filter: blur(3px);
+    opacity: 0.65;
   }
 
   @media (max-width: 600px) {
@@ -300,12 +399,17 @@
     <div class="band-white-mid"></div>
 
     <nav class="nav-section">
-      <button class="nav-arrow" aria-label="Précédent">
+      <button class="nav-arrow" id="navPrev" aria-label="Propriété précédente">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </button>
-      <button class="nav-arrow" aria-label="Suivant">
+
+      <div class="cards-viewport">
+        <div class="cards-track" id="cardsTrack"></div>
+      </div>
+
+      <button class="nav-arrow" id="navNext" aria-label="Propriété suivante">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
@@ -313,5 +417,103 @@
     </nav>
 
   </div>
+
+  <script>
+    // --- Liste des propriétés (ordre d'affichage identique au modèle) ---
+    const PROPERTIES = [
+      { slug: 'rue-de-metz',       img: 'Images/Propriété_2.png', alt: 'À vendre — Rue de Metz' },
+      { slug: 'rue-tolosane',      img: 'Images/Propriété_3.png', alt: 'À vendre — Rue Tolosane' },
+      { slug: 'rue-mage',          img: 'Images/Propriété_6.png', alt: 'À vendre — Rue Mage' },
+      { slug: 'impasse-ampere',    img: 'Images/Propriété_5.png', alt: 'À vendre — Impasse Ampère' },
+      { slug: 'rue-cany',          img: 'Images/Propriété_4.png', alt: 'À vendre — Rue Cany' },
+      { slug: 'rue-croix-baragnon',img: 'Images/Propriété_1.png', alt: 'À vendre — Rue Croix Baragnon' }
+    ];
+    const VISIBLE_COUNT = 5;
+    const WINDOW_SIZE = VISIBLE_COUNT + 2; // 1 carte tampon de chaque côté pour la boucle infinie
+
+    const track = document.getElementById('cardsTrack');
+    const btnPrev = document.getElementById('navPrev');
+    const btnNext = document.getElementById('navNext');
+
+    let startIndex = 0; // index (dans PROPERTIES) de la 1ère carte visible
+    let cardEls = [];
+    let step = 0;        // largeur d'une carte + chevauchement, mesurée en pixels
+    let isAnimating = false;
+
+    function mod(n, m) {
+      return ((n % m) + m) % m;
+    }
+
+    // Construit les 7 éléments <a> une seule fois (recyclés à chaque glissement)
+    function buildCards() {
+      track.innerHTML = '';
+      cardEls = [];
+      for (let i = 0; i < WINDOW_SIZE; i++) {
+        const card = document.createElement('a');
+        card.className = 'card';
+        card.innerHTML = '<img class="card-back" src="" alt="">' +
+                          '<img class="card-front" src="" alt="">';
+        track.appendChild(card);
+        cardEls.push(card);
+      }
+    }
+
+    // Remplit les cartes avec les bonnes images selon la fenêtre courante
+    function fillCards() {
+      for (let i = 0; i < WINDOW_SIZE; i++) {
+        const propIndex = mod(startIndex - 1 + i, PROPERTIES.length);
+        const prop = PROPERTIES[propIndex];
+        const card = cardEls[i];
+        card.href = 'propriete.html?propriete=' + prop.slug;
+        card.querySelector('.card-back').src = prop.img;
+        card.querySelector('.card-front').src = prop.img;
+        card.querySelector('.card-front').alt = prop.alt;
+        card.style.zIndex = 10 + i;
+      }
+    }
+
+    // Mesure la distance réelle (largeur + chevauchement) entre deux cartes voisines
+    function measureStep() {
+      if (cardEls.length < 3) return;
+      step = cardEls[2].offsetLeft - cardEls[1].offsetLeft;
+      positionTrack(false);
+    }
+
+    // Place le track à sa position de repos (1ère carte visible = position 1)
+    function positionTrack(animate) {
+      track.classList.toggle('no-transition', !animate);
+      track.style.transform = 'translateX(' + (-step) + 'px)';
+    }
+
+    function slide(direction) {
+      if (isAnimating || step === 0) return;
+      isAnimating = true;
+
+      track.classList.remove('no-transition');
+      track.style.transform = 'translateX(' + (-step - direction * step) + 'px)';
+
+      const onEnd = () => {
+        track.removeEventListener('transitionend', onEnd);
+        startIndex = mod(startIndex + direction, PROPERTIES.length);
+        fillCards();
+        positionTrack(false); // retour instantané à la position de repos
+        // force le recalcul du style avant de réautoriser une transition
+        void track.offsetWidth;
+        isAnimating = false;
+      };
+      track.addEventListener('transitionend', onEnd);
+    }
+
+    btnPrev.addEventListener('click', () => slide(-1));
+    btnNext.addEventListener('click', () => slide(1));
+
+    window.addEventListener('resize', () => {
+      measureStep();
+    });
+
+    buildCards();
+    fillCards();
+    requestAnimationFrame(measureStep);
+  </script>
 </body>
 </html>
