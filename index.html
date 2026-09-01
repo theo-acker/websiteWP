@@ -13,13 +13,14 @@
     --bg-green: #d8e5d1;
     --text-dark: #1a1a1a;
 
-    /* Cartes propriétés (--card-w recalculée en JS pour occuper toute la largeur du viewport) */
+    /* Cartes propriétés (--card-w et --card-h recalculées en JS) */
     --card-w: 160px;
+    --card-h: 207px;
     --card-ratio: 1004 / 1299;
-    --card-gap: 10px;       /* petit espace fixe entre deux cartes */
+    --card-gap: 26px;       /* espace fixe entre deux cartes (plus grand) */
     --card-back-offset: 0.05; /* décalage de la carte jumelle (haut-gauche) */
-    --card-cut: 10%;        /* part de la carte cachée sous le pli par défaut */
-    --card-lift: 100%;      /* remontée au survol */
+    --card-shift-ratio: 0.30; /* part cachée au repos ET distance de remontée au survol (nombre) */
+    --card-shift: 30%;      /* même valeur, en % pour le transform */
     --ease-slide: cubic-bezier(.4, 0, .2, 1);
   }
 
@@ -228,6 +229,29 @@
     z-index: 4;
   }
 
+  .nav-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .35s ease;
+  }
+
+  .page:has(.card:hover) .nav-section::before {
+    opacity: 0.08;
+  }
+
+  .cards-viewport {
+    position: relative;
+    flex: 1 1 auto;
+    height: 100%;
+    align-self: stretch;
+    clip-path: inset(-2000px 0px -2000px 0px);
+    z-index: 1;
+  }
+
   .nav-arrow {
     background: none;
     border: none;
@@ -252,16 +276,6 @@
     cursor: default;
   }
 
-  /* Fenêtre visible du carrousel : ne clippe que l'horizontal,
-     pour laisser les cartes "sortir du décor" verticalement au survol */
-  .cards-viewport {
-    position: relative;
-    flex: 1 1 auto;
-    height: 100%;
-    align-self: stretch;
-    clip-path: inset(-2000px 0px -2000px 0px);
-  }
-
   .cards-track {
     position: absolute;
     top: 0;
@@ -281,14 +295,29 @@
     position: relative;
     flex: 0 0 auto;
     width: var(--card-w);
-    aspect-ratio: var(--card-ratio);
+    /* Zone de survol statique : englobe à la fois la position au repos
+       et la position surélevée, pour qu'elle ne se dérobe jamais sous la souris */
+    height: calc(var(--card-h) * (1 + var(--card-shift-ratio)));
     display: block;
     text-decoration: none;
-    transform: translateY(var(--card-cut));
-    transition: transform .4s var(--ease-slide), filter .3s ease, opacity .3s ease;
   }
 
-  .card img {
+  .card-visual {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--card-h);
+    transform: translateY(var(--card-shift));
+    transition: transform .4s var(--ease-slide);
+  }
+
+  .card:hover .card-visual,
+  .card:focus-visible .card-visual {
+    transform: translateY(0) scale(1.05);
+  }
+
+  .card-visual img {
     position: absolute;
     top: 0;
     left: 0;
@@ -315,8 +344,7 @@
 
   .card:hover,
   .card:focus-visible {
-    transform: translateY(calc(var(--card-cut) - var(--card-lift))) scale(1.06);
-    z-index: 50 !important;
+    z-index: 50;
   }
 
   /* La carte dédoublée disparaît quand la carte se soulève */
@@ -330,25 +358,24 @@
     filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.35));
   }
 
-  /* Tout ce qui entoure la carte survolée devient légèrement flou (effet discret) */
+  /* Tout ce qui entoure la carte survolée s'assombrit légèrement (effet discret) */
   .band-white-top,
   .hero-section,
   .band-white-mid,
   .nav-arrow {
-    transition: filter .35s ease, opacity .35s ease;
+    transition: filter .35s ease;
   }
 
   .page:has(.card:hover) .band-white-top,
   .page:has(.card:hover) .hero-section,
   .page:has(.card:hover) .band-white-mid,
   .page:has(.card:hover) .nav-arrow {
-    filter: blur(1.5px);
-    opacity: 0.9;
+    filter: brightness(0.85);
   }
 
-  .cards-track:has(.card:hover) .card:not(:hover) {
-    filter: blur(1.5px);
-    opacity: 0.85;
+  .cards-track:has(.card:hover) .card:not(:hover) .card-visual {
+    filter: brightness(0.85);
+    transition: filter .35s ease;
   }
 
   @media (max-width: 600px) {
@@ -470,8 +497,10 @@
       for (let i = 0; i < WINDOW_SIZE; i++) {
         const card = document.createElement('a');
         card.className = 'card';
-        card.innerHTML = '<img class="card-back" src="" alt="">' +
-                          '<img class="card-front" src="" alt="">';
+        card.innerHTML = '<span class="card-visual">' +
+                            '<img class="card-back" src="" alt="">' +
+                            '<img class="card-front" src="" alt="">' +
+                          '</span>';
         track.appendChild(card);
         cardEls.push(card);
       }
@@ -492,27 +521,21 @@
     }
 
     const viewport = document.querySelector('.cards-viewport');
-    const CARD_GAP = 10; // doit correspondre à --card-gap (en px)
-    const SAFETY_MARGIN = 1; // évite qu'un arrondi ne laisse dépasser une 6ème carte
+    const CARD_GAP = 26; // doit correspondre à --card-gap (en px)
+    const SAFETY_MARGIN = 1; // évite qu'un arrondi ne laisse dépasser une carte supplémentaire
+    const CARD_RATIO = 1299 / 1004; // hauteur / largeur
 
-    // Calcule la largeur de carte nécessaire pour que les 5 cartes visibles
+    // Calcule la largeur (et la hauteur) de carte nécessaire pour que les cartes visibles
     // (espacées de CARD_GAP) occupent toute la largeur disponible, sans déborder
     function computeCardWidth() {
       const available = viewport.clientWidth - SAFETY_MARGIN;
       const w = (available - (VISIBLE_COUNT - 1) * CARD_GAP) / VISIBLE_COUNT;
-      document.documentElement.style.setProperty('--card-w', Math.floor(w) + 'px');
+      const width = Math.floor(w);
+      document.documentElement.style.setProperty('--card-w', width + 'px');
+      document.documentElement.style.setProperty('--card-h', Math.round(width * CARD_RATIO) + 'px');
     }
 
     // Mesure la distance réelle (largeur + espacement) entre deux cartes voisines
-    function measureStep() {
-      if (cardEls.length < 3) return;
-      computeCardWidth();
-      // relit la position après application de la nouvelle largeur
-      step = cardEls[2].offsetLeft - cardEls[1].offsetLeft;
-      positionTrack(false);
-    }
-
-    // Mesure la distance réelle (largeur + chevauchement) entre deux cartes voisines
     function measureStep() {
       if (cardEls.length < 3) return;
       computeCardWidth();
