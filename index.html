@@ -16,10 +16,10 @@
     /* Cartes propriétés (--card-w recalculée en JS pour occuper toute la largeur du viewport) */
     --card-w: 160px;
     --card-ratio: 1004 / 1299;
-    --card-overlap: 0.14;   /* chevauchement entre cartes voisines */
+    --card-gap: 10px;       /* petit espace fixe entre deux cartes */
     --card-back-offset: 0.05; /* décalage de la carte jumelle (haut-gauche) */
-    --card-cut: 26%;        /* part de la carte cachée sous le pli par défaut */
-    --card-lift: 92%;       /* remontée au survol */
+    --card-cut: 10%;        /* part de la carte cachée sous le pli par défaut */
+    --card-lift: 100%;      /* remontée au survol */
     --ease-slide: cubic-bezier(.4, 0, .2, 1);
   }
 
@@ -268,6 +268,7 @@
     left: 0;
     display: flex;
     align-items: flex-start;
+    gap: var(--card-gap);
     transition: transform .5s var(--ease-slide);
     will-change: transform;
   }
@@ -287,10 +288,6 @@
     transition: transform .4s var(--ease-slide), filter .3s ease, opacity .3s ease;
   }
 
-  .card + .card {
-    margin-left: calc(var(--card-w) * var(--card-overlap) * -1);
-  }
-
   .card img {
     position: absolute;
     top: 0;
@@ -308,6 +305,7 @@
       calc(var(--card-w) * var(--card-back-offset) * -1),
       calc(var(--card-w) * var(--card-back-offset) * -1)
     );
+    transition: opacity .25s ease;
   }
 
   .card-front {
@@ -319,6 +317,12 @@
   .card:focus-visible {
     transform: translateY(calc(var(--card-cut) - var(--card-lift))) scale(1.06);
     z-index: 50 !important;
+  }
+
+  /* La carte dédoublée disparaît quand la carte se soulève */
+  .card:hover .card-back,
+  .card:focus-visible .card-back {
+    opacity: 0;
   }
 
   .card:hover .card-front,
@@ -473,15 +477,24 @@
     }
 
     const viewport = document.querySelector('.cards-viewport');
-    const OVERLAP_RATIO = 0.14; // doit correspondre à --card-overlap
+    const CARD_GAP = 10; // doit correspondre à --card-gap (en px)
+    const SAFETY_MARGIN = 1; // évite qu'un arrondi ne laisse dépasser une 6ème carte
 
     // Calcule la largeur de carte nécessaire pour que les 5 cartes visibles
-    // (avec leur chevauchement) occupent exactement toute la largeur disponible
+    // (espacées de CARD_GAP) occupent toute la largeur disponible, sans déborder
     function computeCardWidth() {
-      const available = viewport.clientWidth;
-      // available = VISIBLE_COUNT * w - (VISIBLE_COUNT - 1) * (w * OVERLAP_RATIO)
-      const w = available / (VISIBLE_COUNT - (VISIBLE_COUNT - 1) * OVERLAP_RATIO);
-      document.documentElement.style.setProperty('--card-w', w + 'px');
+      const available = viewport.clientWidth - SAFETY_MARGIN;
+      const w = (available - (VISIBLE_COUNT - 1) * CARD_GAP) / VISIBLE_COUNT;
+      document.documentElement.style.setProperty('--card-w', Math.floor(w) + 'px');
+    }
+
+    // Mesure la distance réelle (largeur + espacement) entre deux cartes voisines
+    function measureStep() {
+      if (cardEls.length < 3) return;
+      computeCardWidth();
+      // relit la position après application de la nouvelle largeur
+      step = cardEls[2].offsetLeft - cardEls[1].offsetLeft;
+      positionTrack(false);
     }
 
     // Mesure la distance réelle (largeur + chevauchement) entre deux cartes voisines
