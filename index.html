@@ -19,8 +19,7 @@
     --card-ratio: 1004 / 1299;
     --card-gap: 26px;       /* espace fixe entre deux cartes (plus grand) */
     --card-back-offset: 0.05; /* décalage de la carte jumelle (haut-gauche) */
-    --card-shift-ratio: 0.30; /* part cachée au repos ET distance de remontée au survol (nombre) */
-    --card-shift: 30%;      /* même valeur, en % pour le transform */
+    --card-shift: 40px;     /* portion cachée au repos (fixe, en px) ET distance de remontée au survol */
     --ease-slide: cubic-bezier(.4, 0, .2, 1);
   }
 
@@ -297,7 +296,7 @@
     width: var(--card-w);
     /* Zone de survol statique : englobe à la fois la position au repos
        et la position surélevée, pour qu'elle ne se dérobe jamais sous la souris */
-    height: calc(var(--card-h) * (1 + var(--card-shift-ratio)));
+    height: calc(var(--card-h) + var(--card-shift));
     display: block;
     text-decoration: none;
   }
