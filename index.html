@@ -239,7 +239,7 @@
     transition: opacity .35s ease;
   }
 
-  .page:has(.card:hover) .nav-section::before {
+  .page:has(.card.is-active) .nav-section::before {
     opacity: 0.08;
   }
 
@@ -315,7 +315,7 @@
     transition: transform .4s var(--ease-slide);
   }
 
-  .card:hover .card-visual,
+  .card.is-active .card-visual,
   .card:focus-visible .card-visual {
     transform: translateY(0) scale(1.05);
   }
@@ -345,18 +345,18 @@
     filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.18));
   }
 
-  .card:hover,
+  .card.is-active,
   .card:focus-visible {
     z-index: 50;
   }
 
   /* La carte dédoublée disparaît quand la carte se soulève */
-  .card:hover .card-back,
+  .card.is-active .card-back,
   .card:focus-visible .card-back {
     opacity: 0;
   }
 
-  .card:hover .card-front,
+  .card.is-active .card-front,
   .card:focus-visible .card-front {
     filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.35));
   }
@@ -369,14 +369,14 @@
     transition: filter .35s ease;
   }
 
-  .page:has(.card:hover) .band-white-top,
-  .page:has(.card:hover) .hero-section,
-  .page:has(.card:hover) .band-white-mid,
-  .page:has(.card:hover) .nav-arrow {
+  .page:has(.card.is-active) .band-white-top,
+  .page:has(.card.is-active) .hero-section,
+  .page:has(.card.is-active) .band-white-mid,
+  .page:has(.card.is-active) .nav-arrow {
     filter: brightness(0.85);
   }
 
-  .cards-track:has(.card:hover) .card:not(:hover) .card-visual {
+  .cards-track:has(.card.is-active) .card:not(.is-active) .card-visual {
     filter: brightness(0.85);
     transition: filter .35s ease;
   }
@@ -425,7 +425,7 @@
           <img src="Images/HASA Promotion Logo.png" alt="Logo entreprise">
         </div>
         <nav class="top-nav">
-          <a href="realisation.html">Réalisations</a>
+          <a href="plateau.html">Plateau</a>
           <a href="contexte.html">Contexte</a>
           <a href="contact.html">Contact</a>
         </nav>
@@ -435,11 +435,11 @@
     <section class="hero-section">
       <div class="hero-container">
         <div class="logo-wrapper">
-          <img src="Images/Logo.png" alt="Tablo jeu">
+          <img src="Images/Logo.png" alt="HASA Promotion Logo">
         </div>
         <div class="content-wrapper">
           <h1>Jouez. Explorez. Investissez.</h1>
-          <p>Une aventure née sur le terrain, devenue un livre blanc. Explorez les codes de la gamification, ses opporunités et son potentiel pour réinventer la communication immobilière.</p>
+          <p>Découvrez tous nos biens disponibles comme vous ne l'avez jamais vu et tentez votre chance pour gagner de nombreux cadeaux.</p>
           <a class="btn-download" href="livre-blanc.html">Téléchargez le livre blanc</a>
         </div>
       </div>
@@ -506,6 +506,16 @@
                           '</span>';
         track.appendChild(card);
         cardEls.push(card);
+
+        const visual = card.querySelector('.card-visual');
+
+        // Ne se lève que si la souris passe réellement sur la carte visible
+        // (et non sur la zone vide réservée à la remontée, au repos)
+        visual.addEventListener('mouseenter', () => card.classList.add('is-active'));
+
+        // Ne redescend que quand la souris quitte entièrement la zone
+        // (repos + surélevée) : évite qu'elle ne se lève/couche en boucle
+        card.addEventListener('mouseleave', () => card.classList.remove('is-active'));
       }
     }
 
@@ -520,6 +530,7 @@
         card.querySelector('.card-front').src = prop.img;
         card.querySelector('.card-front').alt = prop.alt;
         card.style.zIndex = 10 + i;
+        card.classList.remove('is-active');
       }
     }
 
