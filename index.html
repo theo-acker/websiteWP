@@ -330,10 +330,25 @@
     filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.35));
   }
 
-  /* Le fond (les autres cartes) se floute quand une carte est survolée */
+  /* Tout ce qui entoure la carte survolée devient légèrement flou (effet discret) */
+  .band-white-top,
+  .hero-section,
+  .band-white-mid,
+  .nav-arrow {
+    transition: filter .35s ease, opacity .35s ease;
+  }
+
+  .page:has(.card:hover) .band-white-top,
+  .page:has(.card:hover) .hero-section,
+  .page:has(.card:hover) .band-white-mid,
+  .page:has(.card:hover) .nav-arrow {
+    filter: blur(1.5px);
+    opacity: 0.9;
+  }
+
   .cards-track:has(.card:hover) .card:not(:hover) {
-    filter: blur(3px);
-    opacity: 0.65;
+    filter: blur(1.5px);
+    opacity: 0.85;
   }
 
   @media (max-width: 600px) {
@@ -432,7 +447,7 @@
       { slug: 'rue-cany',          img: 'Images/Propriété_4.png', alt: 'À vendre — Rue Cany' },
       { slug: 'rue-croix-baragnon',img: 'Images/Propriété_1.png', alt: 'À vendre — Rue Croix Baragnon' }
     ];
-    const VISIBLE_COUNT = 5;
+    const VISIBLE_COUNT = 4;
     const WINDOW_SIZE = VISIBLE_COUNT + 2; // 1 carte tampon de chaque côté pour la boucle infinie
 
     const track = document.getElementById('cardsTrack');
