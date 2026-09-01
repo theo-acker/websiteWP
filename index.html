@@ -19,7 +19,8 @@
     --card-ratio: 1004 / 1299;
     --card-gap: 26px;       /* espace fixe entre deux cartes (plus grand) */
     --card-back-offset: 0.05; /* décalage de la carte jumelle (haut-gauche) */
-    --card-shift: 40px;     /* portion cachée au repos (fixe, en px) ET distance de remontée au survol */
+    --card-shift: 40px;     /* portion cachée au repos (fixe, en px) */
+    --card-lift: 140px;     /* remontée au survol (recalculée en JS selon la taille de carte) */
     --ease-slide: cubic-bezier(.4, 0, .2, 1);
   }
 
@@ -295,8 +296,11 @@
     flex: 0 0 auto;
     width: var(--card-w);
     /* Zone de survol statique : englobe à la fois la position au repos
-       et la position surélevée, pour qu'elle ne se dérobe jamais sous la souris */
-    height: calc(var(--card-h) + var(--card-shift));
+       et la position surélevée, pour qu'elle ne se dérobe jamais sous la souris.
+       La marge négative compense l'ajout de hauteur pour garder la position
+       de repos inchangée (seul le haut de la zone s'étend, pas le bas). */
+    height: calc(var(--card-h) + var(--card-shift) + var(--card-lift));
+    margin-top: calc(var(--card-lift) * -1);
     display: block;
     text-decoration: none;
   }
@@ -307,7 +311,7 @@
     left: 0;
     width: 100%;
     height: var(--card-h);
-    transform: translateY(var(--card-shift));
+    transform: translateY(calc(var(--card-shift) + var(--card-lift)));
     transition: transform .4s var(--ease-slide);
   }
 
@@ -523,15 +527,18 @@
     const CARD_GAP = 26; // doit correspondre à --card-gap (en px)
     const SAFETY_MARGIN = 1; // évite qu'un arrondi ne laisse dépasser une carte supplémentaire
     const CARD_RATIO = 1299 / 1004; // hauteur / largeur
+    const LIFT_RATIO = 0.62; // remontée au survol = 62% de la hauteur de carte
 
-    // Calcule la largeur (et la hauteur) de carte nécessaire pour que les cartes visibles
+    // Calcule la largeur (et la hauteur/remontée) de carte nécessaire pour que les cartes visibles
     // (espacées de CARD_GAP) occupent toute la largeur disponible, sans déborder
     function computeCardWidth() {
       const available = viewport.clientWidth - SAFETY_MARGIN;
       const w = (available - (VISIBLE_COUNT - 1) * CARD_GAP) / VISIBLE_COUNT;
       const width = Math.floor(w);
+      const height = Math.round(width * CARD_RATIO);
       document.documentElement.style.setProperty('--card-w', width + 'px');
-      document.documentElement.style.setProperty('--card-h', Math.round(width * CARD_RATIO) + 'px');
+      document.documentElement.style.setProperty('--card-h', height + 'px');
+      document.documentElement.style.setProperty('--card-lift', Math.round(height * LIFT_RATIO) + 'px');
     }
 
     // Mesure la distance réelle (largeur + espacement) entre deux cartes voisines
