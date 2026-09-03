@@ -516,6 +516,14 @@
         // Ne redescend que quand la souris quitte entièrement la zone
         // (repos + surélevée) : évite qu'elle ne se lève/couche en boucle
         card.addEventListener('mouseleave', () => card.classList.remove('is-active'));
+
+        // Empêche la navigation tant que la carte n'est pas relevée :
+        // au repos, la zone de clic ne doit pas rediriger vers la propriété
+        card.addEventListener('click', (e) => {
+          if (!card.classList.contains('is-active')) {
+            e.preventDefault();
+          }
+        });
       }
     }
 
