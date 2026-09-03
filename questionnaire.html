@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accès au livre blanc</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #d6e7d1;
+    color: #000000;
+    padding: 20px;
+  }
+  .topbar {
+    max-width: 640px;
+    margin: 0 auto 20px auto;
+  }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid #000000;
+    background-color: #faf9f8;
+    color: #000000;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .back-btn:hover {
+    background-color: #000000;
+    color: #faf9f8;
+  }
+  .page-container {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .logo-wrap {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .logo-wrap img {
+    max-height: 60px;
+  }
+  .intro {
+    background-color: #faf9f8;
+    border: 1px solid #000000;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-size: 24px;
+    margin: 0 0 16px 0;
+  }
+  .intro p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 14px 0;
+  }
+  .intro h2 {
+    font-size: 16px;
+    margin: 20px 0 10px 0;
+  }
+  .intro ul {
+    margin: 0 0 14px 0;
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .cta-line {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 18px;
+  }
+  .form-container {
+    background-color: #faf9f8;
+    border: 1px solid #000000;
+    padding: 24px;
+  }
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .required {
+    color: #000000;
+  }
+  .name-row {
+    display: flex;
+    gap: 12px;
+  }
+  .name-row .field {
+    flex: 1;
+  }
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  fieldset {
+    border: 1px solid #000000;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+  }
+  fieldset legend {
+    font-size: 14px;
+    padding: 0 6px;
+  }
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .option:last-child {
+    margin-bottom: 0;
+  }
+  .option input {
+    margin: 0;
+  }
+  .autre-champ {
+    display: none;
+    margin-top: 8px;
+    margin-bottom: 0;
+  }
+  .autre-champ.visible {
+    display: block;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    color: #cccccc;
+    cursor: not-allowed;
+    font-family: inherit;
+  }
+  button.active {
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  #message {
+    text-align: center;
+    font-size: 13px;
+    margin-top: 12px;
+    min-height: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="index.html">&larr; Retour</a>
+</div>
+
+<div class="page-container">
+
+  <div class="logo-wrap">
+    <img src="Images/Chat.png" alt="Logo">
+  </div>
+
+  <div class="intro">
+    <h1>Jouez autrement avec votre communication immobilière. 🎲</h1>
+    <p>Un livre blanc pour comprendre comment la gamification peut aider les acteurs de l'immobilier à sortir des codes traditionnels et à créer des expériences plus engageantes.</p>
+    <p>Née de mon expérience sur le terrain, cette réflexion part d'un constat simple : dans un secteur où les acteurs jouent encore souvent avec les mêmes règles, la différenciation peut aussi passer par l'expérience.</p>
+    <p>À travers ce livre blanc, je vous invite à découvrir les mécaniques de la gamification, leurs applications dans l'immobilier et une proposition concrète inspirée du jeu pour repenser la communication du secteur.</p>
+
+    <h2>💡 Dans ce livre blanc, vous trouverez :</h2>
+    <ul>
+      <li>Un état des lieux de la communication immobilière</li>
+      <li>Les clés pour comprendre la gamification</li>
+      <li>Les principaux freins à son adoption</li>
+      <li>Une méthodologie pour intégrer la gamification de façon cohérente</li>
+      <li>Un concept adapté à la communication immobilière</li>
+    </ul>
+
+    <p class="cta-line">↓ Remplissez les informations ci-dessous et entrez dans la partie en téléchargeant gratuitement mon livre blanc.</p>
+  </div>
+
+  <div class="form-container">
+    <form id="accessForm" novalidate>
+
+      <div class="name-row">
+        <div class="field">
+          <label for="nom">Nom <span class="required">*</span></label>
+          <input type="text" id="nom" name="nom" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="prenom">Prénom <span class="required">*</span></label>
+          <input type="text" id="prenom" name="prenom" autocomplete="off">
+        </div>
+      </div>
+
+      <label for="email">Email <span class="required">*</span></label>
+      <input type="text" id="email" name="email" autocomplete="off">
+
+      <fieldset id="profilGroup">
+        <legend>Quel est votre profil ? <span class="required">*</span></legend>
+        <div class="option"><input type="radio" name="profil" id="profil-etudiant" value="Étudiant"><label for="profil-etudiant" style="margin:0;">Étudiant</label></div>
+        <div class="option"><input type="radio" name="profil" id="profil-comm" value="Professionnel de la communication"><label for="profil-comm" style="margin:0;">Professionnel de la communication</label></div>
+        <div class="option"><input type="radio" name="profil" id="profil-immo" value="Professionnel de l'immobilier"><label for="profil-immo" style="margin:0;">Professionnel de l'immobilier</label></div>
+        <div class="option"><input type="radio" name="profil" id="profil-chef" value="Chef d'entreprise"><label for="profil-chef" style="margin:0;">Chef d'entreprise</label></div>
+        <div class="option"><input type="radio" name="profil" id="profil-ens" value="Enseignant / Chercheur"><label for="profil-ens" style="margin:0;">Enseignant / Chercheur</label></div>
+        <div class="option"><input type="radio" name="profil" id="profil-autre" value="Autre"><label for="profil-autre" style="margin:0;">Autre</label></div>
+        <input type="text" id="profil-autre-texte" class="autre-champ" placeholder="Précisez votre profil">
+      </fieldset>
+
+      <fieldset id="raisonGroup">
+        <legend>Pourquoi souhaitez-vous télécharger ce livre blanc ? <span class="required">*</span></legend>
+        <div class="option"><input type="checkbox" name="raison" id="raison-strategie" value="M'inspirer pour ma stratégie de communication"><label for="raison-strategie" style="margin:0;">M'inspirer pour ma stratégie de communication</label></div>
+        <div class="option"><input type="checkbox" name="raison" id="raison-secteur" value="Découvrir le secteur de l'immobilier"><label for="raison-secteur" style="margin:0;">Découvrir le secteur de l'immobilier</label></div>
+        <div class="option"><input type="checkbox" name="raison" id="raison-veille" value="Réaliser une veille marketing"><label for="raison-veille" style="margin:0;">Réaliser une veille marketing</label></div>
+        <div class="option"><input type="checkbox" name="raison" id="raison-etudes" value="Dans le cadre de mes études"><label for="raison-etudes" style="margin:0;">Dans le cadre de mes études</label></div>
+        <div class="option"><input type="checkbox" name="raison" id="raison-autre" value="Autre"><label for="raison-autre" style="margin:0;">Autre</label></div>
+        <input type="text" id="raison-autre-texte" class="autre-champ" placeholder="Précisez votre raison">
+      </fieldset>
+
+      <fieldset id="gamifGroup">
+        <legend>Connaissiez-vous le principe de gamification ? <span class="required">*</span></legend>
+        <div class="option"><input type="radio" name="gamification" id="gamif-oui" value="Oui"><label for="gamif-oui" style="margin:0;">Oui</label></div>
+        <div class="option"><input type="radio" name="gamification" id="gamif-non" value="Non"><label for="gamif-non" style="margin:0;">Non</label></div>
+      </fieldset>
+
+      <button type="button" id="accessBtn" disabled>Télécharger</button>
+      <div id="message"></div>
+    </form>
+  </div>
+
+</div>
+
+<script>
+  // === À CONFIGURER ===
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyE50OaGMRDNCBPL2jaUH6b-03g7sAPG4bzMySdySV_CLBQXGpqU4R2Y-YtgS6PjI-7Ug/exec";
+  const LIVRE_BLANC_URL = ".../WP";
+  // =====================
+
+  const nomInput = document.getElementById('nom');
+  const prenomInput = document.getElementById('prenom');
+  const emailInput = document.getElementById('email');
+  const accessBtn = document.getElementById('accessBtn');
+  const message = document.getElementById('message');
+
+  const profilAutreCheckbox = document.getElementById('profil-autre');
+  const profilAutreTexte = document.getElementById('profil-autre-texte');
+  const raisonAutreCheckbox = document.getElementById('raison-autre');
+  const raisonAutreTexte = document.getElementById('raison-autre-texte');
+
+  function toggleAutreChamp(checkbox, champ) {
+    if (checkbox.checked) {
+      champ.classList.add('visible');
+    } else {
+      champ.classList.remove('visible');
+      champ.value = '';
+    }
+  }
+
+  profilAutreCheckbox.addEventListener('change', () => {
+    toggleAutreChamp(profilAutreCheckbox, profilAutreTexte);
+    checkForm();
+  });
+  raisonAutreCheckbox.addEventListener('change', () => {
+    toggleAutreChamp(raisonAutreCheckbox, raisonAutreTexte);
+    checkForm();
+  });
+
+  function isFormValid() {
+    const nomOk = nomInput.value.trim().length > 0;
+    const prenomOk = prenomInput.value.trim().length > 0;
+    const emailOk = emailInput.value.includes('@') && emailInput.value.trim().length > 0;
+    const profilOk = document.querySelector('input[name="profil"]:checked') !== null;
+    const raisonOk = document.querySelectorAll('input[name="raison"]:checked').length > 0;
+    const gamifOk = document.querySelector('input[name="gamification"]:checked') !== null;
+    return nomOk && prenomOk && emailOk && profilOk && raisonOk && gamifOk;
+  }
+
+  function checkForm() {
+    if (isFormValid()) {
+      accessBtn.disabled = false;
+      accessBtn.classList.add('active');
+    } else {
+      accessBtn.disabled = true;
+      accessBtn.classList.remove('active');
+    }
+  }
+
+  [nomInput, prenomInput, emailInput].forEach(input => {
+    input.addEventListener('input', checkForm);
+  });
+  document.querySelectorAll('input[name="profil"]').forEach(radio => {
+    radio.addEventListener('change', checkForm);
+  });
+  document.querySelectorAll('input[name="raison"]').forEach(checkbox => {
+    checkbox.addEventListener('change', checkForm);
+  });
+  document.querySelectorAll('input[name="gamification"]').forEach(radio => {
+    radio.addEventListener('change', checkForm);
+  });
+
+  accessBtn.addEventListener('click', function() {
+    if (!isFormValid()) return;
+
+    accessBtn.disabled = true;
+    message.textContent = "Envoi en cours...";
+
+    const profil = document.querySelector('input[name="profil"]:checked').value;
+    const profilDetail = profilAutreCheckbox.checked ? profilAutreTexte.value.trim() : '';
+    const raisons = Array.from(document.querySelectorAll('input[name="raison"]:checked')).map(cb => cb.value);
+    const raisonDetail = raisonAutreCheckbox.checked ? raisonAutreTexte.value.trim() : '';
+    const gamification = document.querySelector('input[name="gamification"]:checked').value;
+
+    const data = {
+      nom: nomInput.value.trim(),
+      prenom: prenomInput.value.trim(),
+      email: emailInput.value.trim(),
+      profil: profil,
+      profilDetail: profilDetail,
+      raisons: raisons.join(', '),
+      raisonDetail: raisonDetail,
+      gamification: gamification
+    };
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(() => {
+      message.textContent = "";
+      window.open(LIVRE_BLANC_URL, '_blank');
+      checkForm();
+    })
+    .catch(() => {
+      message.textContent = "Une erreur est survenue, réessayez.";
+      checkForm();
+    });
+  });
+</script>
+
+</body>
+</html>
