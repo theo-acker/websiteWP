@@ -296,13 +296,19 @@
     flex: 0 0 auto;
     width: var(--card-w);
     /* Zone de survol statique : englobe à la fois la position au repos
-       et la position surélevée, pour qu'elle ne se dérobe jamais sous la souris.
+       et la position surélevée, pour qu'elle ne se dérobe jamais sous la souris
+       une fois la carte relevée (évite tout scintillement pendant la remontée/descente).
        La marge négative compense l'ajout de hauteur pour garder la position
-       de repos inchangée (seul le haut de la zone s'étend, pas le bas). */
+       de repos inchangée (seul le haut de la zone s'étend, pas le bas).
+       Au repos, cette zone élargie ne doit rien capter (pointer-events: none)
+       pour ne pas bloquer les éléments environnants : seule la carte réellement
+       visible (.card-visual, ci-dessous) reste cliquable/survolable tant que
+       la carte n'est pas relevée. */
     height: calc(var(--card-h) + var(--card-shift) + var(--card-lift));
     margin-top: calc(var(--card-lift) * -1);
     display: block;
     text-decoration: none;
+    pointer-events: none;
   }
 
   .card-visual {
@@ -313,6 +319,9 @@
     height: var(--card-h);
     transform: translateY(calc(var(--card-shift) + var(--card-lift)));
     transition: transform .4s var(--ease-slide);
+    /* Toujours actif : c'est cette zone (la carte réellement visible,
+       au repos ou relevée) qui capte le survol initial et le déclenche. */
+    pointer-events: auto;
   }
 
   .card.is-active .card-visual,
@@ -348,6 +357,9 @@
   .card.is-active,
   .card:focus-visible {
     z-index: 50;
+    /* Une fois relevée, la grande zone statique redevient active pour
+       maintenir la carte levée pendant toute l'animation sans scintillement. */
+    pointer-events: auto;
   }
 
   /* La carte dédoublée disparaît quand la carte se soulève */
