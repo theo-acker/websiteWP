@@ -156,9 +156,25 @@
     margin-top: 12px;
     min-height: 16px;
   }
+  #catOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    pointer-events: none;
+  }
+  .logo-wrap img {
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
+
+<div id="catOverlay"></div>
 
 <div class="topbar">
   <a class="back-btn" href="index.html">&larr; Retour à l'Accueil</a>
@@ -167,7 +183,7 @@
 <div class="page-container">
 
   <div class="logo-wrap">
-    <img src="Images/Chat.png" alt="Logo">
+    <img src="Images/Chat.png" alt="Logo" id="catLogo">
   </div>
 
   <div class="intro">
@@ -347,6 +363,45 @@
       message.textContent = "Une erreur est survenue, réessayez.";
       checkForm();
     });
+  });
+</script>
+
+<script>
+  // === Interaction logo du chat ===
+  const CAT_NORMAL_IMG = "Images/Chat.png";
+  const CAT_ANGRY_IMG = "Images/chatpascontent.png";
+  const CAT_SOUND_1 = "Sons/Cat sound state1.wav";
+  const CAT_SOUND_2 = "Sons/Cat sound state2.wav";
+  const CAT_ANGRY_DURATION = 15000; // 15 secondes
+
+  const catLogo = document.getElementById('catLogo');
+  const catOverlay = document.getElementById('catOverlay');
+  let catClickCount = 0;
+  let catIsAngry = false;
+
+  catLogo.addEventListener('click', function() {
+    if (catIsAngry) return;
+
+    catClickCount++;
+
+    if (catClickCount < 5) {
+      const sound1 = new Audio(CAT_SOUND_1);
+      sound1.play();
+    } else {
+      catIsAngry = true;
+      catLogo.src = CAT_ANGRY_IMG;
+      catOverlay.style.display = 'block';
+
+      const sound2 = new Audio(CAT_SOUND_2);
+      sound2.play();
+
+      setTimeout(function() {
+        catLogo.src = CAT_NORMAL_IMG;
+        catOverlay.style.display = 'none';
+        catIsAngry = false;
+        catClickCount = 0;
+      }, CAT_ANGRY_DURATION);
+    }
   });
 </script>
 
