@@ -208,7 +208,6 @@
   }
 
   .info-text {
-    max-width: 640px;
     line-height: 1.6;
     color: #2c2c26;
   }
@@ -317,7 +316,7 @@
         price: '- €',
         surface: '165 m²',
         type: 'Bureau',
-        info: 'Ce bureau très bien positionné dans le quartier des Carmes à tout pour être le bureau de vos rêves : espace, moderne, cave en plus.',
+        info: 'Ce <b>bureau</b> très bien positionné dans le quartier des <b>Carmes</b> à tout pour être le bureau de vos rêves : espace, moderne, <b>cave</b> en plus.',
         color: '#ffed00',
         mainImage: 'Images/PPT MAGE.png'
       },
@@ -404,7 +403,7 @@
       document.getElementById('propPrice').textContent = property.price;
       document.getElementById('propSurface').textContent = property.surface;
       document.getElementById('propType').textContent = property.type;
-      document.getElementById('propInfo').textContent = property.info;
+      document.getElementById('propInfo').innerHTML = property.info;
 
       document.title = property.title + ' - HASA Promotion';
 
