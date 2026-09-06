@@ -57,14 +57,14 @@
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
     font-size: 0.9rem;
-    background-color: var(--bg-green);
-    border: none;
-    padding: 12px 22px;
+    background-color: #ffffff;
+    border: 2px solid var(--text-dark);
+    padding: 10px 20px;
     cursor: pointer;
     color: var(--text-dark);
   }
 
-  .btn-all:hover { background-color: #c9dcbe; }
+  .btn-all:hover { background-color: #f2f2f2; }
 
   /* ---------- Zone verte : le reste de la page ---------- */
   .green-area {
@@ -92,31 +92,14 @@
 
   .btn-home:hover { background-color: #f0f0f0; }
 
-  /* ---------- Galerie photo du bien (une seule propriété, plusieurs photos) ---------- */
+  /* ---------- Galerie photo du bien ---------- */
+  /* Pas de cadre couleur ni de format imposé : chaque photo garde ses
+     propres proportions (on ne "complète" jamais en blanc autour). */
   .gallery {
     display: flex;
     align-items: center;
     gap: 16px;
     margin-bottom: 34px;
-  }
-
-  .photo-frame {
-    flex: 1 1 auto;
-    aspect-ratio: 4 / 3;
-    max-height: 56vh;
-    background-color: #ffffff;
-    border: 6px solid var(--prop-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .photo-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
   }
 
   .gallery-arrow {
@@ -125,8 +108,8 @@
     height: 44px;
     border-radius: 50%;
     background-color: #ffffff;
-    border: 2px solid var(--prop-color);
-    color: var(--prop-color);
+    border: 2px solid var(--text-dark);
+    color: var(--text-dark);
     font-size: 1.3rem;
     line-height: 1;
     cursor: pointer;
@@ -135,7 +118,54 @@
 
   .gallery-arrow:hover { transform: scale(1.08); }
 
-  /* ---------- Informations du bien ---------- */
+  .photo-wrap {
+    flex: 1 1 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
+  }
+
+  .photo-wrap img {
+    display: block;
+    max-width: 100%;
+    max-height: 56vh;
+    width: auto;
+    height: auto;
+    transition: opacity .2s ease;
+  }
+
+  .photo-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .spinner {
+    width: 26px;
+    height: 26px;
+    border: 3px solid rgba(0, 0, 0, 0.15);
+    border-top-color: var(--text-dark);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------- Description du bien : panneau blanc + petites cases colorées ---------- */
+  .info-panel {
+    background-color: #ffffff;
+    padding: clamp(20px, 3vw, 36px);
+  }
+
   .info-panel h1 {
     font-family: 'League Spartan', sans-serif;
     font-weight: 800;
@@ -146,14 +176,20 @@
   .address {
     color: var(--text-muted);
     font-size: 0.95rem;
-    margin-bottom: 26px;
+    margin-bottom: 24px;
   }
 
   .specs {
     display: flex;
     flex-wrap: wrap;
-    gap: 22px 44px;
-    margin-bottom: 22px;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .spec-box {
+    border: 2px solid var(--prop-color);
+    padding: 12px 18px;
+    min-width: 120px;
   }
 
   .spec-label {
@@ -177,7 +213,8 @@
   }
 
   @media (max-width: 600px) {
-    .photo-frame { max-height: 40vh; border-width: 4px; }
+    .photo-wrap { min-height: 180px; }
+    .photo-wrap img { max-height: 38vh; }
     .gallery-arrow { width: 38px; height: 38px; font-size: 1.1rem; }
   }
 </style>
@@ -200,9 +237,15 @@
 
         <section class="gallery">
           <button class="gallery-arrow" id="prevBtn" aria-label="Photo précédente">&lsaquo;</button>
-          <div class="photo-frame">
-            <img id="mainPhoto" src="" alt="">
+
+          <div class="photo-wrap">
+            <img id="mainPhoto" src="" alt="" style="opacity:0;">
+            <div class="photo-loader" id="photoLoader">
+              <span class="spinner"></span>
+              <span>Chargement de la photo…</span>
+            </div>
           </div>
+
           <button class="gallery-arrow" id="nextBtn" aria-label="Photo suivante">&rsaquo;</button>
         </section>
 
@@ -211,15 +254,15 @@
           <p class="address" id="propAddress"></p>
 
           <div class="specs">
-            <div>
+            <div class="spec-box">
               <span class="spec-label">Prix</span>
               <span class="spec-value" id="propPrice"></span>
             </div>
-            <div>
+            <div class="spec-box">
               <span class="spec-label">Surface</span>
               <span class="spec-value" id="propSurface"></span>
             </div>
-            <div>
+            <div class="spec-box">
               <span class="spec-label">Type de bien</span>
               <span class="spec-value" id="propType"></span>
             </div>
@@ -238,8 +281,8 @@
        DONNÉES DES PROPRIÉTÉS
        -> Toutes les valeurs ci-dessous sont des PLACEHOLDERS à remplacer.
        -> "mainImage" = photo personnalisée du bien (1ère photo affichée).
-       -> "color"     = couleur associée au bien (cadre de la photo + boutons
-          de navigation de cette page).
+       -> "color"     = couleur associée au bien (cadre des petites cases de
+          caractéristiques, dans le panneau blanc).
        -> Les pages ne sont PAS reliées entre elles : depuis cette page on ne
           peut pas aller vers un autre bien, seulement parcourir SES photos.
        ========================================================================= */
@@ -334,10 +377,23 @@
     const photos = [property.mainImage, ...GENERIC_PHOTOS];
     let photoIndex = 0;
 
+    const mainPhoto = document.getElementById('mainPhoto');
+    const photoLoader = document.getElementById('photoLoader');
+
     function updatePhoto() {
-      document.getElementById('mainPhoto').src = photos[photoIndex];
-      document.getElementById('mainPhoto').alt = property.title + ' - photo ' + (photoIndex + 1);
+      photoLoader.style.display = 'flex';
+      mainPhoto.style.opacity = '0';
+      mainPhoto.src = photos[photoIndex];
+      mainPhoto.alt = property.title + ' - photo ' + (photoIndex + 1);
     }
+
+    mainPhoto.addEventListener('load', () => {
+      photoLoader.style.display = 'none';
+      mainPhoto.style.opacity = '1';
+    });
+    mainPhoto.addEventListener('error', () => {
+      photoLoader.style.display = 'none';
+    });
 
     function render() {
       document.documentElement.style.setProperty('--prop-color', property.color);
