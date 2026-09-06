@@ -13,7 +13,8 @@
     --bg-cream: #faf9f7;
     --bg-green: #d8e5d1;
     --text-dark: #1a1a1a;
-    --text-muted: #6b6b62;
+    --text-muted: #55554d;
+    --prop-color: #1a1a1a; /* remplacée en JS par la couleur du bien */
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,39 +22,36 @@
   body {
     font-family: 'Open Sans', sans-serif;
     color: var(--text-dark);
+    background-color: var(--bg-green);
+  }
+
+  .page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Bande blanche du haut : logo + "voir toutes les propriétés" ---------- */
+  .topbar {
+    flex: 0 0 auto;
     background-color: var(--bg-cream);
   }
 
-  /* ---------- Bandeau haut : retour accueil (gauche) / voir tout (droite) ---------- */
-  .topbar {
+  .topbar-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 18px clamp(20px, 4vw, 40px);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    padding: 18px clamp(20px, 4vw, 40px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
   }
 
-  .back-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: var(--text-dark);
-  }
-
-  .back-link img {
-    height: 30px;
+  .logo {
+    height: 32px;
     width: auto;
     display: block;
   }
-
-  .back-link span {
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-
-  .back-link:hover { opacity: 0.65; }
 
   .btn-all {
     font-family: 'Open Sans', sans-serif;
@@ -68,115 +66,81 @@
 
   .btn-all:hover { background-color: #c9dcbe; }
 
-  /* ---------- Contenu ---------- */
-  .content {
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 32px clamp(20px, 4vw, 40px) 70px;
+  /* ---------- Zone verte : le reste de la page ---------- */
+  .green-area {
+    flex: 1 1 auto;
+    background-color: var(--bg-green);
   }
 
-  /* Galerie : flèche - photo principale - flèche */
+  .green-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 22px clamp(20px, 4vw, 40px) 70px;
+  }
+
+  .btn-home {
+    display: inline-block;
+    background-color: #ffffff;
+    color: var(--text-dark);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 12px 22px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  .btn-home:hover { background-color: #f0f0f0; }
+
+  /* ---------- Galerie photo du bien (une seule propriété, plusieurs photos) ---------- */
   .gallery {
     display: flex;
     align-items: center;
-    gap: 14px;
-    background-color: var(--bg-green);
-    padding: 22px;
+    gap: 16px;
+    margin-bottom: 34px;
   }
 
-  .gallery-arrow {
-    flex: 0 0 auto;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: none;
-    background-color: #ffffff;
-    font-size: 1.3rem;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-  }
-
-  .gallery-arrow:hover { background-color: #f0f0f0; }
-
-  .main-photo {
+  .photo-frame {
     flex: 1 1 auto;
     aspect-ratio: 4 / 3;
-    max-height: 60vh;
+    max-height: 56vh;
+    background-color: #ffffff;
+    border: 6px solid var(--prop-color);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background-color: #ffffff;
   }
 
-  .main-photo img {
+  .photo-frame img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     display: block;
   }
 
-  /* Bandeau de vignettes (les 6 biens, navigation directe) */
-  .thumbs-row {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    padding: 12px 2px 0;
-  }
-
-  .thumb {
+  .gallery-arrow {
     flex: 0 0 auto;
-    width: 76px;
-    border: none;
-    background: none;
-    padding: 3px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 2px solid var(--prop-color);
+    color: var(--prop-color);
+    font-size: 1.3rem;
+    line-height: 1;
     cursor: pointer;
-    border-radius: 4px;
-    opacity: 0.5;
-    box-shadow: 0 0 0 2px transparent;
-    transition: opacity .2s ease, box-shadow .2s ease;
+    transition: transform .15s ease;
   }
 
-  .thumb img {
-    width: 100%;
-    display: block;
-    border-radius: 2px;
-  }
+  .gallery-arrow:hover { transform: scale(1.08); }
 
-  .thumb:hover { opacity: 0.85; }
-
-  .thumb.active {
-    opacity: 1;
-    box-shadow: 0 0 0 2px var(--thumb-color, var(--text-dark));
-  }
-
-  /* Titre + badge couleur + adresse */
-  .info-panel {
-    padding: 28px 2px 26px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.09);
-    margin-bottom: 28px;
-  }
-
-  .title-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 6px;
-  }
-
-  .title-row h1 {
+  /* ---------- Informations du bien ---------- */
+  .info-panel h1 {
     font-family: 'League Spartan', sans-serif;
     font-weight: 800;
     font-size: clamp(1.5rem, 2.4vw + 1rem, 2.3rem);
-  }
-
-  .color-badge {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    flex: 0 0 auto;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 8px;
   }
 
   .address {
@@ -209,100 +173,75 @@
   .info-text {
     max-width: 640px;
     line-height: 1.6;
-    color: #333;
-  }
-
-  /* Autres photos : simple liste, sans mise en scène */
-  .other-photos h2 {
-    font-family: 'League Spartan', sans-serif;
-    font-weight: 700;
-    font-size: 1.1rem;
-    margin-bottom: 14px;
-  }
-
-  .photo-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .photo-list img {
-    width: 150px;
-    height: 112px;
-    object-fit: cover;
-    display: block;
+    color: #2c2c26;
   }
 
   @media (max-width: 600px) {
-    .main-photo { max-height: 42vh; }
-    .gallery-arrow { width: 36px; height: 36px; font-size: 1.1rem; }
-    .photo-list img { width: 42%; height: auto; aspect-ratio: 4/3; }
+    .photo-frame { max-height: 40vh; border-width: 4px; }
+    .gallery-arrow { width: 38px; height: 38px; font-size: 1.1rem; }
   }
 </style>
 </head>
 <body>
 
-  <header class="topbar">
-    <a class="back-link" href="index.html">
-      <img src="Images/HASA Promotion Logo.png" alt="HASA Promotion">
-      <span>&larr; Retour à l'accueil</span>
-    </a>
-    <button class="btn-all" id="btnAll">Voir toutes les propriétés</button>
-  </header>
+  <div class="page">
 
-  <main class="content">
-
-    <section class="gallery">
-      <button class="gallery-arrow" id="prevBtn" aria-label="Bien précédent">&lsaquo;</button>
-      <div class="main-photo">
-        <img id="mainPhoto" src="" alt="">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <img class="logo" src="Images/HASA Promotion Logo.png" alt="HASA Promotion">
+        <button class="btn-all" id="btnAll">Voir toutes les propriétés</button>
       </div>
-      <button class="gallery-arrow" id="nextBtn" aria-label="Bien suivant">&rsaquo;</button>
-    </section>
+    </header>
 
-    <div class="thumbs-row" id="thumbsRow"></div>
+    <div class="green-area">
+      <div class="green-inner">
 
-    <section class="info-panel">
-      <div class="title-row">
-        <h1 id="propTitle"></h1>
-        <span class="color-badge" id="colorBadge"></span>
+        <a class="btn-home" href="index.html">&larr; Retour à l'accueil</a>
+
+        <section class="gallery">
+          <button class="gallery-arrow" id="prevBtn" aria-label="Photo précédente">&lsaquo;</button>
+          <div class="photo-frame">
+            <img id="mainPhoto" src="" alt="">
+          </div>
+          <button class="gallery-arrow" id="nextBtn" aria-label="Photo suivante">&rsaquo;</button>
+        </section>
+
+        <section class="info-panel">
+          <h1 id="propTitle"></h1>
+          <p class="address" id="propAddress"></p>
+
+          <div class="specs">
+            <div>
+              <span class="spec-label">Prix</span>
+              <span class="spec-value" id="propPrice"></span>
+            </div>
+            <div>
+              <span class="spec-label">Surface</span>
+              <span class="spec-value" id="propSurface"></span>
+            </div>
+            <div>
+              <span class="spec-label">Type de bien</span>
+              <span class="spec-value" id="propType"></span>
+            </div>
+          </div>
+
+          <p class="info-text" id="propInfo"></p>
+        </section>
+
       </div>
-      <p class="address" id="propAddress"></p>
+    </div>
 
-      <div class="specs">
-        <div>
-          <span class="spec-label">Prix</span>
-          <span class="spec-value" id="propPrice"></span>
-        </div>
-        <div>
-          <span class="spec-label">Surface</span>
-          <span class="spec-value" id="propSurface"></span>
-        </div>
-        <div>
-          <span class="spec-label">Type de bien</span>
-          <span class="spec-value" id="propType"></span>
-        </div>
-      </div>
-
-      <p class="info-text" id="propInfo"></p>
-    </section>
-
-    <section class="other-photos">
-      <h2>Autres photos</h2>
-      <div class="photo-list" id="photoList"></div>
-    </section>
-
-  </main>
+  </div>
 
   <script>
     /* =========================================================================
        DONNÉES DES PROPRIÉTÉS
        -> Toutes les valeurs ci-dessous sont des PLACEHOLDERS à remplacer.
-       -> "mainImage" = photo personnalisée du bien (bandeau vert, page détail).
-       -> "cardImage" = même image que celle utilisée dans le carrousel de
-          l'accueil (index.html), réutilisée ici comme vignette.
-       -> "color" = couleur associée au bien (utilisée pour le badge et le
-          contour de la vignette active).
+       -> "mainImage" = photo personnalisée du bien (1ère photo affichée).
+       -> "color"     = couleur associée au bien (cadre de la photo + boutons
+          de navigation de cette page).
+       -> Les pages ne sont PAS reliées entre elles : depuis cette page on ne
+          peut pas aller vers un autre bien, seulement parcourir SES photos.
        ========================================================================= */
     const PROPERTIES = [
       {
@@ -314,8 +253,7 @@
         type: 'Appartement',                               // PLACEHOLDER
         info: 'Informations supplémentaires à compléter.', // PLACEHOLDER
         color: '#22a54c',
-        mainImage: 'Images/PPT METZ.png',
-        cardImage: 'Images/Propriété_2b.png'
+        mainImage: 'Images/PPT METZ.png'
       },
       {
         slug: 'rue-tolosane',
@@ -326,8 +264,7 @@
         type: 'Maison',
         info: 'Informations supplémentaires à compléter.',
         color: '#e3030d',
-        mainImage: 'Images/PPT TOLOSANE.jpg',
-        cardImage: 'Images/Propriété_3b.png'
+        mainImage: 'Images/PPT TOLOSANE.jpg'
       },
       {
         slug: 'rue-mage',
@@ -338,8 +275,7 @@
         type: 'Bureau',
         info: 'Informations supplémentaires à compléter.',
         color: '#ffed00',
-        mainImage: 'Images/PPT MAGE.png',
-        cardImage: 'Images/Propriété_6b.png'
+        mainImage: 'Images/PPT MAGE.png'
       },
       {
         slug: 'impasse-ampere',
@@ -350,8 +286,7 @@
         type: 'Maison',
         info: 'Informations supplémentaires à compléter.',
         color: '#d73089',
-        mainImage: 'Images/PPT AMPèRE.png',
-        cardImage: 'Images/Propriété_5b.png'
+        mainImage: 'Images/PPT AMPèRE.png'
       },
       {
         slug: 'rue-cany',
@@ -362,8 +297,7 @@
         type: 'Appartement',
         info: 'Informations supplémentaires à compléter.',
         color: '#bae2fb',
-        mainImage: 'Images/PPT Cany.png',
-        cardImage: 'Images/Propriété_4b.png'
+        mainImage: 'Images/PPT Cany.png'
       },
       {
         slug: 'rue-croix-baragnon',
@@ -374,12 +308,12 @@
         type: 'Maison',
         info: 'Informations supplémentaires à compléter.',
         color: '#036ab3',
-        mainImage: 'Images/PPT CROIX BARAGNON.png',
-        cardImage: 'Images/Propriété_1b.png'
+        mainImage: 'Images/PPT CROIX BARAGNON.png'
       }
     ];
 
-    /* Photos génériques, communes à tous les biens (simple liste). */
+    /* Photos génériques communes à tous les biens, ajoutées après la photo
+       personnalisée dans le parcours des flèches de la galerie. */
     const GENERIC_PHOTOS = [
       'Images/BIENa.png',
       'Images/BIENb.png',
@@ -395,71 +329,46 @@
       return idx === -1 ? 0 : idx;
     }
 
-    function goTo(slug) {
-      window.location.href = 'propriete.html?propriete=' + encodeURIComponent(slug);
-    }
-
-    function renderThumbs(activeIdx) {
-      const row = document.getElementById('thumbsRow');
-      row.innerHTML = '';
-      PROPERTIES.forEach((p, i) => {
-        const thumb = document.createElement('button');
-        thumb.className = 'thumb' + (i === activeIdx ? ' active' : '');
-        thumb.style.setProperty('--thumb-color', p.color);
-        thumb.setAttribute('aria-label', p.title);
-        thumb.innerHTML = '<img src="' + p.cardImage + '" alt="' + p.title + '">';
-        thumb.addEventListener('click', () => goTo(p.slug));
-        row.appendChild(thumb);
-      });
-    }
-
-    function renderGenericPhotos() {
-      const list = document.getElementById('photoList');
-      list.innerHTML = '';
-      GENERIC_PHOTOS.forEach(src => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = 'Photo du bien';
-        list.appendChild(img);
-      });
-    }
-
-    function render(idx) {
-      const prop = PROPERTIES[idx];
-
-      document.getElementById('mainPhoto').src = prop.mainImage;
-      document.getElementById('mainPhoto').alt = prop.title;
-
-      document.getElementById('propTitle').textContent = prop.title;
-      document.getElementById('colorBadge').style.backgroundColor = prop.color;
-      document.getElementById('propAddress').textContent = prop.address;
-      document.getElementById('propPrice').textContent = prop.price;
-      document.getElementById('propSurface').textContent = prop.surface;
-      document.getElementById('propType').textContent = prop.type;
-      document.getElementById('propInfo').textContent = prop.info;
-
-      document.title = prop.title + ' - HASA Promotion';
-
-      renderThumbs(idx);
-    }
-
     const params = new URLSearchParams(window.location.search);
-    let currentIndex = findIndex(params.get('propriete'));
+    const property = PROPERTIES[findIndex(params.get('propriete'))];
+    const photos = [property.mainImage, ...GENERIC_PHOTOS];
+    let photoIndex = 0;
 
-    render(currentIndex);
-    renderGenericPhotos();
+    function updatePhoto() {
+      document.getElementById('mainPhoto').src = photos[photoIndex];
+      document.getElementById('mainPhoto').alt = property.title + ' - photo ' + (photoIndex + 1);
+    }
+
+    function render() {
+      document.documentElement.style.setProperty('--prop-color', property.color);
+
+      document.getElementById('propTitle').textContent = property.title;
+      document.getElementById('propAddress').textContent = property.address;
+      document.getElementById('propPrice').textContent = property.price;
+      document.getElementById('propSurface').textContent = property.surface;
+      document.getElementById('propType').textContent = property.type;
+      document.getElementById('propInfo').textContent = property.info;
+
+      document.title = property.title + ' - HASA Promotion';
+
+      updatePhoto();
+    }
 
     document.getElementById('prevBtn').addEventListener('click', () => {
-      goTo(PROPERTIES[mod(currentIndex - 1, PROPERTIES.length)].slug);
+      photoIndex = mod(photoIndex - 1, photos.length);
+      updatePhoto();
     });
 
     document.getElementById('nextBtn').addEventListener('click', () => {
-      goTo(PROPERTIES[mod(currentIndex + 1, PROPERTIES.length)].slug);
+      photoIndex = mod(photoIndex + 1, photos.length);
+      updatePhoto();
     });
 
     document.getElementById('btnAll').addEventListener('click', () => {
       alert('Vous avez compris le principe');
     });
+
+    render();
   </script>
 
 </body>
