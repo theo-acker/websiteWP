@@ -125,19 +125,40 @@
   }
 
   /* Emplacement du pion */
-  .pion-placeholder {
-    margin: 40px auto 0;
-    width: 160px;
-    height: 207px;
-    border: 2px dashed #8a8a80;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 0.9rem;
-    color: #8a8a80;
+  .pion-wrap {
     text-align: center;
+    margin: 20px 0 24px;
+  }
+
+  .pion-wrap img {
+    max-height: 100px;
+    width: auto;
+  }
+
+  /* Cadre de texte, identique à .intro sur questionnaire.html */
+  .content-box {
+    max-width: 640px;
+    margin: 0 auto;
+    background-color: #faf9f8;
+    border: 1px solid #000000;
+    padding: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .content-box h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 16px 0;
+  }
+
+  .content-box p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 14px 0;
+  }
+
+  .content-box p:last-child {
+    margin-bottom: 0;
   }
 </style>
 </head>
@@ -160,7 +181,18 @@
     <section class="green-section">
       <a class="back-btn" href="index.html">&larr; Retour à l'Accueil</a>
 
-      <div class="pion-placeholder">Pion</div>
+      <div class="pion-wrap">
+        <img src="Images/Pions/Chapeau.png" alt="Pion Chapeau">
+      </div>
+
+      <div class="content-box">
+        <h1>Pourquoi ce livre blanc ? 🤷‍♂️</h1>
+        <p>Une réflexion née de mon expérience dans l'immobilier et d'un constat simple : dans un secteur où les acteurs se ressemblent encore beaucoup, la communication peut devenir un véritable levier de différenciation.</p>
+        <p>Actuellement en dernière année de Mastère en Communication Corporate à l'ESP Toulouse, j'ai choisi de faire de la communication mon métier. C'est au cours de mon alternance que cette réflexion a réellement pris forme.</p>
+        <p>Cette expérience m'a permis de développer ma capacité d'adaptation, mais surtout d'observer directement les pratiques de communication d'un secteur qui reste encore très attaché à des codes traditionnels.</p>
+        <p>💡 C'est à partir de ce constat qu'une question s'est imposée : comment permettre aux acteurs de l'immobilier de se différencier autrement ?</p>
+        <p>Mon intérêt pour l'univers du jeu m'a alors conduit à m'intéresser à la gamification. L'idée n'est pas de transformer l'immobilier en jeu, mais d'utiliser certaines mécaniques issues du jeu pour rendre la communication et l'expérience client plus interactives et engageantes.</p>
+      </div>
     </section>
 
   </div>
