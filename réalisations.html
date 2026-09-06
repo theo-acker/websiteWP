@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réalisations - HASA Promotion</title>
+<link rel="icon" type="image/png" href="Images/Logo Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-cream: #faf9f7;
+    --bg-green: #d8e5d1;
+    --text-dark: #1a1a1a;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text-dark);
+    background-color: var(--bg-cream);
+  }
+
+  .page {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Bande blanche du haut : identique à l'Accueil (logo + navigation) */
+  .band-white-top {
+    flex: 0 0 auto;
+    background-color: var(--bg-cream);
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+  }
+
+  .header-bar {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 40px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .brand-logo img {
+    height: clamp(24px, 5vh, 44px);
+    width: auto;
+    display: block;
+  }
+
+  .top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(18px, 3vw, 40px);
+    margin-left: auto;
+  }
+
+  .top-nav a {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: clamp(0.85rem, 1.9vh, 1.1rem);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-dark);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .top-nav a:hover {
+    opacity: 0.65;
+  }
+
+  .top-nav a.active {
+    font-weight: 800;
+    text-decoration: underline;
+  }
+
+  /* Bande verte : contenu de la page */
+  .green-section {
+    flex: 1 1 auto;
+    background-color: var(--bg-green);
+    padding: 20px clamp(16px, 4vw, 40px) 40px;
+    position: relative;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid #000000;
+    background-color: #faf9f8;
+    color: #000000;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .back-btn:hover {
+    background-color: #000000;
+    color: #faf9f8;
+  }
+
+  /* Emplacement du pion */
+  .pion-placeholder {
+    margin: 40px auto 0;
+    width: 160px;
+    height: 207px;
+    border: 2px dashed #8a8a80;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.9rem;
+    color: #8a8a80;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="band-white-top">
+      <div class="header-bar">
+        <div class="brand-logo">
+          <img src="Images/HASA Promotion Logo.png" alt="Logo entreprise">
+        </div>
+        <nav class="top-nav">
+          <a href="réalisations.html" class="active">Réalisations</a>
+          <a href="contexte.html">Contexte</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </div>
+
+    <section class="green-section">
+      <a class="back-btn" href="index.html">&larr; Retour à l'Accueil</a>
+
+      <div class="pion-placeholder">Pion</div>
+    </section>
+
+  </div>
+</body>
+</html>
