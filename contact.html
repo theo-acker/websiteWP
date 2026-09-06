@@ -133,6 +133,7 @@
   .pion-wrap img {
     max-height: 100px;
     width: auto;
+    cursor: pointer;
   }
 
   /* Cadre de texte, identique à .intro sur questionnaire.html */
@@ -182,7 +183,7 @@
       <a class="back-btn" href="index.html">&larr; Retour à l'Accueil</a>
 
       <div class="pion-wrap">
-        <img src="Images/Pions/PION QUALITé MAX.png" alt="Pion">
+        <img src="Images/Pions/PION QUALITé MAX.png" alt="Pion" id="pionContact">
       </div>
 
       <div class="content-box">
@@ -193,5 +194,32 @@
     </section>
 
   </div>
+
+<script>
+  // === Sons du pion (clic) : à compléter avec les chemins réels ===
+  const PION_SONS = [
+    "Sons/Pion son 1.wav",
+    "Sons/Pion son 2.wav",
+    "Sons/Pion son 3.wav"
+  ];
+  // ===================================================================
+
+  const pionContact = document.getElementById('pionContact');
+  let pionEnCours = false;
+
+  pionContact.addEventListener('click', function() {
+    if (pionEnCours) return; // le son en cours ne peut pas être coupé
+
+    pionEnCours = true;
+    const sonChoisi = PION_SONS[Math.floor(Math.random() * PION_SONS.length)];
+    const son = new Audio(sonChoisi);
+
+    son.addEventListener('ended', function() {
+      pionEnCours = false;
+    });
+
+    son.play();
+  });
+</script>
 </body>
 </html>
