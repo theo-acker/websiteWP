@@ -1,1 +1,1 @@
-Oui, c'est tout.
+Squelette du site "https://mvauchez.github.io/livre-blanc/"
